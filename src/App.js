@@ -201,11 +201,8 @@ function App() {
           }
             </Card.Text>
            </Card.Body>
-           <Card.Body style={{ textAlign: 'center', fontWeight:'normal'}}>
-            <Card.Text>
-              RaheNajat.life
-            </Card.Text>
-           </Card.Body>
+
+           <Card.Footer style={{backgroundColor: 'lightgreen', textEmphasisColor: 'white'}} className="text-muted">RaheNajat.Life</Card.Footer>
         </Card>
         
       </Container>
