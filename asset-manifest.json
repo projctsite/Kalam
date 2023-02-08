@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/RaheNajat/static/css/main.756af292.css",
+    "main.js": "/RaheNajat/static/js/main.4a3f5200.js",
+    "static/js/787.f9df16de.chunk.js": "/RaheNajat/static/js/787.f9df16de.chunk.js",
+    "index.html": "/RaheNajat/index.html",
+    "main.756af292.css.map": "/RaheNajat/static/css/main.756af292.css.map",
+    "main.4a3f5200.js.map": "/RaheNajat/static/js/main.4a3f5200.js.map",
+    "787.f9df16de.chunk.js.map": "/RaheNajat/static/js/787.f9df16de.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.756af292.css",
+    "static/js/main.4a3f5200.js"
+  ]
+}
