@@ -1,8 +1,9 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useState,useRef,useCallback} from 'react';
 import './App.css';
+import './styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Collapse, Table, OverlayTrigger, Popover, Card, Container,Spinner  } from 'react-bootstrap';
-//import ButtonClicks from './ButtonClicks'
+import {Button, Collapse, Table,Overlay, Popover, Card, Container,Spinner,Tabs,Tab } from 'react-bootstrap';
+
 
 var ot= [];
 var nt=[];
@@ -33,9 +34,9 @@ function App() {
         for (i = 39; i < 66; i++) {nt.push(json.data.books[i]);}})
       .then(()=>{setOpen(true);bibleButtonDisabled=false;isLoading=false;});
     }
-  }, [isLoading]);
+  }, []);
 
-  function callChapter(event){
+  const  callChapter=useCallback((event) => {
  
     var book_id=event.target.value.substr(0,3);
     var bookChapter=event.target.value.substr(3);
@@ -55,8 +56,8 @@ function App() {
         console.log(chapter_content);
       })
       .then(()=>{setChapterLoading(false);});
-    
-  }
+  },[]);
+
   return (
     <div className="App">
     
@@ -74,17 +75,25 @@ function App() {
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         ) : (
-          'क़िताब मुकदस'
+          'किताब ए मुकद्दस'
           /*Bible*/
         )
       }
       </Button>
- 
+      <br/><br/>
+
       <Collapse in={open}>
         <div id="collapse-Bible-index">
 
         <Container fliud>
-        <Table  bordered >
+
+        <Tabs
+      defaultActiveKey="nt"
+      id="justify-tab-example"
+      justify
+    >
+      <Tab eventKey="ot" title="पुराना अहेदनामा">
+      <Table  bordered >
       <thead >
         <tr >
 
@@ -95,47 +104,23 @@ function App() {
       </thead>
       <tbody>
         <tr>
-
           <td>
-            
-         
           {
-            
           ot.map((book_object) => (
-        <OverlayTrigger
-          trigger="focus"
-          key={book_object.name}
-          placement="bottom"
-          overlay={
-            <Popover id={`popover-positioned-${book_object.name}`}>
-              <Popover.Header as="h3">{` ${book_object.name}`}</Popover.Header>
-              <Popover.Body>
-               
-                {
-                  book_object.chapters.map((book_chapter) => (
-                    <Button variant="outline-success" style={{width: '4rem', margin:1 }} value={book_object.book_id+book_chapter} onClick={callChapter}>{book_chapter}</Button>
-                  ))
-                }             
-              </Popover.Body>
-            </Popover>
-          }
-        >
-          <Button variant="outline-success" style={{width: '10rem' , margin:1  }} >{book_object.name}</Button>
-        </OverlayTrigger>
+        
+        <ChapterNav bookData={book_object} callChapter={callChapter}/>
+
       ))}
           </td>
-        
-
         </tr>
- 
- 
       </tbody>
     </Table>
-
-    <Table bordered>
+      </Tab>
+      <Tab eventKey="nt" title="नया अहेदनामा">
+      <Table bordered>
       <thead >
         <tr >
-          <th style={{width: '35rem'  }}>नया अहेदनाम <br/>(इंजील मुकदस)</th>
+          <th style={{width: '35rem'  }}>नया अहेदनामा <br/>(इंजील मुकद्दस)</th>
           {/*New Testament */}
         </tr>
       </thead>
@@ -143,26 +128,7 @@ function App() {
       <tr>
         <td>
           {nt.map((book_object) => (
-        <OverlayTrigger
-          trigger="focus"
-          key={book_object.name}
-          placement="bottom"
-          overlay={
-            <Popover id={`popover-positioned-${book_object.name}`}>
-              <Popover.Header as="h3">{` ${book_object.name}`}</Popover.Header>
-              <Popover.Body>
-              {
-                book_object.chapters.map((book_chapter) => (
-                  <Button variant="outline-success" style={{width: '4rem', margin:1 }} value={book_object.book_id+book_chapter} onClick={callChapter}>{book_chapter}</Button>
-          ))}
-
-
-              </Popover.Body>
-            </Popover>
-          }
-        >
-          <Button variant="outline-success" style={{width: '10rem', margin:1   }}>{book_object.name}</Button>
-        </OverlayTrigger>
+        <ChapterNav bookData={book_object} callChapter={callChapter}/>
       ))}
           
           </td>
@@ -172,6 +138,9 @@ function App() {
       </tbody>
 
     </Table>
+      </Tab>
+
+    </Tabs>
     </Container>
         </div>
        
@@ -209,5 +178,39 @@ function App() {
     </div>
   );
 }
+function ChapterNav(props ){
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
+  const buttons = [];
+ function callingChapter(){
+  chapter_name="";
+  setShow(false);
+ }
+  for (let i = 1; i <= props.bookData.chapters.length; i++) {
+    buttons.push(<Button style={{width: '4rem', margin:1 }} value={props.bookData.book_id+`${i}`} variant='outline-success' onMouseDownCapture={callingChapter} onClick={props.callChapter}>{i}</Button>);
+}
+  return(
+            <>
+                <Overlay
+                target={target.current}
+                show={show}
+                placement='bottom'
+                rootClose='true'
+                rootCloseEvent='mousedown'
+                onHide={()=>setShow(false)}
+                >
+                  <Popover id={`popover-positioned-1`} onMouseEnter={()=> setShow(true)} onMouseLeave={()=>setShow(false)}>
+                      <Popover.Header as="h1">{props.bookData.name}</Popover.Header>
+                      <Popover.Body>
+                          {buttons}
+                      </Popover.Body>
+                  </Popover>
+                </Overlay>
+                      
+                <Button variant='outline-success' style={{width: '10rem', margin:1   }} ref={target} onMouseDown={()=> setShow(true)} >{props.bookData.name}</Button>
 
+            </>
+
+  );
+}
 export default App;
