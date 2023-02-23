@@ -67,7 +67,7 @@ function App() {
         aria-controls="example-collapse-text"
         aria-expanded={open}
         className=" "
-        style={{width: '10rem' , borderRadius:10 }}
+        style={{width: '10rem'  }}
         disabled={bibleButtonDisabled}
       >
         {isLoading ? (
@@ -171,7 +171,7 @@ function App() {
             </Card.Text>
            </Card.Body>
 
-           <Card.Footer style={{backgroundColor: 'lightgreen', textEmphasisColor: 'white'}} className="text-muted">RaheNajat.Life</Card.Footer>
+           <Card.Footer style={{backgroundColor: 'lightgreen', textEmphasisColor: 'white'}} className="text-muted"><a href='https://rahenajat.life/'><Button variant='success'>RaheNajat.Life</Button></a></Card.Footer>
         </Card>
         
       </Container>
