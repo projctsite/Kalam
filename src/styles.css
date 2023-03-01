@@ -9,5 +9,6 @@
   
   .nav-tabs .nav-link.active {
     background-color: green !important;
-    border-bottom: solid 4px black !important;
+    color: white !important;
+    border-bottom: solid 3px black !important;
   }
